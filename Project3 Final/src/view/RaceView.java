@@ -39,7 +39,7 @@ public class RaceView {
 
     private final Image obstacleImage = new Image("file:resources/images/obstacle.png");
     private final Image stopImage = new Image("file:resources/images/stop.png");
-    private final Image carImage = new Image("file:resources/images/car.png");
+    private final Image carImage = new Image("file:resources/images/car1.png");
     private final Image backgroundImage = new Image("file:resources/images/circle.jpg");
     private ScrollPane scrollPane;
 
