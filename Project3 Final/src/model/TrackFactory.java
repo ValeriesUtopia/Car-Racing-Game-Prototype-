@@ -9,9 +9,10 @@ public class TrackFactory {
     private static void autoPlaceObstacles(Track track, int numberOfObstacles, double radius) {
         List<Stop> stops = track.getStops();
         int stopCount = stops.size();
+        int interval = stopCount / numberOfObstacles;
 
         for (int i = 0; i < numberOfObstacles; i++) {
-            int index = i % stopCount;
+            int index = (i * interval) % stopCount;
             Stop s1 = stops.get(index);
             Stop s2 = stops.get((index + 1) % stopCount);
 
@@ -55,61 +56,31 @@ public class TrackFactory {
     public static Track createChallengeTrack() {
         List<Stop> stops = new ArrayList<>();
         stops.add(new Stop("A", 100, 100));
-        stops.add(new Stop("B", 300, 200));
-        stops.add(new Stop("C", 500, 100));
-        stops.add(new Stop("D", 700, 200));
-        stops.add(new Stop("E", 900, 100));
-        stops.add(new Stop("F", 800, 400));
-        stops.add(new Stop("G", 500, 600));
-        stops.add(new Stop("H", 200, 500));
-
-        Track track = new Track("Challenge Track", Track.Difficulty.CHALLENGE, stops);
-        autoPlaceObstacles(track, 5, 30);
-        return track;
-    }
-}
-
-
-
-/*原来版本，但是不满的版本
-public class TrackFactory {
-
-    public static Track createEasyTrack() {
-        List<Stop> stops = new ArrayList<>();
-        stops.add(new Stop("A", 100, 100));
-        stops.add(new Stop("B", 300, 100));
-        stops.add(new Stop("C", 500, 100));
-
-        Track track = new Track("Easy Track", Track.Difficulty.EASY, stops);
-        // No obstacles or minimal ones
-        return track;
-    }
-
-    public static Track createMediumTrack() {
-        List<Stop> stops = new ArrayList<>();
-        stops.add(new Stop("A", 100, 100));
-        stops.add(new Stop("B", 200, 200));
+        stops.add(new Stop("B", 200, 130));
         stops.add(new Stop("C", 300, 100));
-        stops.add(new Stop("D", 400, 200));
-
-        Track track = new Track("Medium Track", Track.Difficulty.MEDIUM, stops);
-        track.addObstacle(new SlipperyObstacle(250, 150, 40));
-        return track;
-    }
-
-    public static Track createChallengeTrack() {
-        List<Stop> stops = new ArrayList<>();
-        stops.add(new Stop("A", 100, 100));
-        stops.add(new Stop("B", 150, 200));
-        stops.add(new Stop("C", 200, 100));
-        stops.add(new Stop("D", 250, 200));
-        stops.add(new Stop("E", 300, 100));
+        stops.add(new Stop("D", 400, 140));
+        stops.add(new Stop("E", 500, 100));
+        stops.add(new Stop("F", 600, 140));
+        stops.add(new Stop("G", 700, 100));
+        stops.add(new Stop("H", 800, 150));
+        stops.add(new Stop("I", 900, 230));
+        stops.add(new Stop("J", 880, 340));
+        stops.add(new Stop("K", 800, 400));
+        stops.add(new Stop("L", 720, 420));
+        stops.add(new Stop("M", 640, 440));
+        stops.add(new Stop("N", 560, 460));
+        stops.add(new Stop("O", 480, 480));
+        stops.add(new Stop("P", 400, 500));
+        stops.add(new Stop("Q", 480, 520));
+        stops.add(new Stop("R", 560, 540));
+        stops.add(new Stop("S", 640, 560));
+        stops.add(new Stop("T", 720, 580));
+        stops.add(new Stop("U", 800, 600));
+        stops.add(new Stop("V", 880, 620));
+        stops.add(new Stop("W", 980, 630));
 
         Track track = new Track("Challenge Track", Track.Difficulty.CHALLENGE, stops);
-        track.addObstacle(new SlipperyObstacle(140, 180, 30));
-        track.addObstacle(new SlipperyObstacle(260, 180, 30));
+        autoPlaceObstacles(track, 9, 25);
         return track;
     }
 }
-
- */
