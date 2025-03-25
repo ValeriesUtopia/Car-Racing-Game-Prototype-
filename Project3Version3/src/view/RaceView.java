@@ -166,7 +166,7 @@ public class RaceView {
         root.setRight(statusPanel);
         root.setBottom(controlBox);
 
-        Scene scene = new Scene(root, 1000, 600);
+        Scene scene = new Scene(root, 1350, 750);
         primaryStage.setTitle("🏁 Racing Game");
         primaryStage.setScene(scene);
         primaryStage.show();
