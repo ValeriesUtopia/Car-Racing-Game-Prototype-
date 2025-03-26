@@ -19,7 +19,7 @@ public class Main extends Application {
         DifficultySelectionController controller = new DifficultySelectionController(primaryStage, gameData);
         controller.showSelectionScreen();  // ⬅️ 启动 UI1
                try {
-            String musicFile = "resources/images/racesound.mp3"; // Replace with the correct path
+            String musicFile = "resources/images/MenuJazz.mp3"; // Replace with the correct path
             Media sound = new Media(new File(musicFile).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.setOnReady(() -> {
