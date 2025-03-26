@@ -31,4 +31,13 @@ public class GameData {
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
+
+    public void resetRaceState() {
+        List<Stop> stops = selectedTrack.getStops();
+        for (int i = 0; i < cars.size(); i++) {
+            Car car = cars.get(i);
+            car.resetProgress();
+
+        }
+    }
 }

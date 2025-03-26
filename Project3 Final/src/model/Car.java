@@ -83,6 +83,20 @@ public class Car {
         }
         return sb.toString();
     }
+    public void resetProgress(){
+        currentStopIndex = 0;
+        currentSpeed = 0.0;
+        totalTime = 0.0;
+        isSliding = false;
+        hasFinished = false;
+        visitedStops.clear();
+        if(!route.isEmpty()) {
+            Stop start = route.get(0);
+            positionX = start.getX();
+            positionY = start.getY();
+            visitedStops.add(start);
+        }
+    }
 }
 
 

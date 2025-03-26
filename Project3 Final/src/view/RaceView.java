@@ -154,6 +154,7 @@ public class RaceView {
                 race.stop();
                 race.dispose();
             }
+            gameData.resetRaceState();
             Media sound = new Media(new File("resources/images/racesound.mp3").toURI().toString());
             race = new MediaPlayer(sound);
             raceController = new RaceController(primaryStage, gameData);
