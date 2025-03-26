@@ -45,7 +45,8 @@ public class RaceView {
 
     private final Image obstacleImage = new Image("file:resources/images/obstacle.png");
     private final Image stopImage = new Image("file:resources/images/stop.png");
-    private final Image carImage = new Image("file:resources/images/car.png");
+    private final Image carImage = new Image("file:resources/images/car1.png");
+    private final Image carImage2 = new Image("file:resources/images/car2.png");
     private final Image backgroundImage = new Image("file:resources/images/circle.jpg");
     private ScrollPane scrollPane;
 
@@ -214,11 +215,20 @@ public class RaceView {
             gc.drawImage(obstacleImage, obstacle.getX() - 15, obstacle.getY() - 15, 30, 30);
         }
 
-        for (Car car : gameData.getCars()) {
-            gc.drawImage(carImage, car.getPositionX() - 15, car.getPositionY() - 15, 30, 30);
+        List<Car> cars = gameData.getCars();
+        for (int i = 0; i < cars.size(); i++){
+            Car car = cars.get(i);
+            Image currentCarImage = ( i == 0) ? carImage : (i == 1) ? carImage2 : carImage;
+            gc.drawImage(currentCarImage, car.getPositionX() - 15, car.getPositionY() - 15, 30, 30);
             gc.setFill(Color.BLACK);
             gc.fillText(car.getName(), car.getPositionX() - 10, car.getPositionY() - 20);
         }
+
+        //for (Car car : gameData.getCars()) {
+        //    gc.drawImage(carImage, car.getPositionX() - 15, car.getPositionY() - 15, 30, 30);
+        //    gc.setFill(Color.BLACK);
+        //    gc.fillText(car.getName(), car.getPositionX() - 10, car.getPositionY() - 20);
+        //}
     }
 
     private void updateStatus() {
