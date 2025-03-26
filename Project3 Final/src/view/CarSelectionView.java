@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class CarSelectionView {
     private final Stage primaryStage;
     private final CarSelectionController controller;
+    private final Image MainImage = new Image("file:resources/images/MainScreen.jpg");
 
     public CarSelectionView(Stage primaryStage, CarSelectionController controller) {
         this.primaryStage = primaryStage;
@@ -29,14 +30,16 @@ public class CarSelectionView {
         // Title
 
         Text title = new Text(" \uD83D\uDE98 Select Your Car Setup");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 32));
+        title.setFont(Font.font("Marlett", FontWeight.BOLD, 32));
         title.setFill(Color.DARKRED);
 
 
         // === User 1 ===
-        Text user1Text = new Text("User 1:");
-        user1Text.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        Text user1Text = new Text("Player 1:");
+        user1Text.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 24));
         user1Text.setFill(Color.DARKBLUE);
+
+        
 
         ComboBox<String> wheelBox1 = new ComboBox<>();
         wheelBox1.getItems().addAll("Standard", "Carbon", "Alloy");
@@ -52,8 +55,8 @@ public class CarSelectionView {
         user1Box.setAlignment(Pos.CENTER);
 
         // === User 2 ===
-        Text user2Text = new Text("User 2:");
-        user2Text.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        Text user2Text = new Text("Player 2 :");
+        user2Text.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 24));
         user2Text.setFill(Color.DARKBLUE);
 
         ComboBox<String> wheelBox2 = new ComboBox<>();
@@ -88,15 +91,15 @@ public class CarSelectionView {
         }
 
         Text mapLabel = new Text("You have picked:  " + selectedDifficulty + " track");
-        mapLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        mapLabel.setFill(Color.DARKSLATEBLUE);
+        mapLabel.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 20));
+        mapLabel.setFill(Color.RED);
 
         VBox mapBox = new VBox(10, mapLabel, mapPreview);
         mapBox.setAlignment(Pos.CENTER);
 
         // === Buttons ===
         Button backButton = new Button("Back");
-        backButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        backButton.setFont(Font.font("Marlett", FontWeight.BOLD, 16));
         backButton.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 8 16;");
         backButton.setOnAction(e -> controller.handleBack());
 
@@ -110,7 +113,7 @@ public class CarSelectionView {
                 backButton.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white; -fx-padding: 8 16;"));
 
         Button nextButton = new Button("Next");
-        nextButton.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        nextButton.setFont(Font.font("Marlett", FontWeight.BOLD, 16));
         nextButton.setStyle("-fx-background-color: #28a745; -fx-text-fill: white; -fx-padding: 8 16;");
         nextButton.setOnAction(e -> {
             String user1Wheel = wheelBox1.getValue();
@@ -128,10 +131,15 @@ public class CarSelectionView {
         buttonBox.setAlignment(Pos.CENTER);
 
         // === Final Layout ===
-        VBox layout = new VBox(40, title, usersBox, mapBox, buttonBox);
+        ImageView mainImageView = new ImageView(MainImage);
+        VBox layout = new VBox(mainImageView, title, usersBox, mapBox, buttonBox);
+        layout.setSpacing(40);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(50));
-        layout.setStyle("-fx-background-color: linear-gradient(to bottom, #E6E6FA, #B0C4DE);");
+        layout.setStyle("-fx-background-image: url('file:resources/images/racerMain.jpg'); " +
+                        "-fx-background-size: cover; " +
+                        "-fx-background-position: center;");
+
 
         Scene scene = new Scene(layout, 1000, 700);
         primaryStage.setScene(scene);
@@ -407,3 +415,4 @@ public class CarSelectionView {
 }
 
  */
+
