@@ -12,7 +12,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Car;
@@ -20,6 +24,7 @@ import model.GameData;
 import model.Stop;
 import model.Obstacle;
 
+import java.io.File;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -36,10 +41,11 @@ public class RaceView {
 
     private RaceController raceController;
     private Timeline timeline;
+    private MediaPlayer race;
 
     private final Image obstacleImage = new Image("file:resources/images/obstacle.png");
     private final Image stopImage = new Image("file:resources/images/stop.png");
-    private final Image carImage = new Image("file:resources/images/car1.png");
+    private final Image carImage = new Image("file:resources/images/car.png");
     private final Image backgroundImage = new Image("file:resources/images/circle.jpg");
     private ScrollPane scrollPane;
 
@@ -52,12 +58,14 @@ public class RaceView {
     }
 
     public void show() {
+
         statusPanel.setPadding(new Insets(10));
         statusPanel.setPrefWidth(300);
-        statusPanel.setStyle("-fx-background-color: #f4f4f4; -fx-border-color: gray;");
+        statusPanel.setStyle("-fx-background-color:rgb(41, 121, 6); -fx-border-color: green;");
 
         Label statusLabel = new Label("\uD83D\uDCCA Game Status Board");
-       statusLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: darkgreen");
+        statusLabel.setStyle("-fx-text-fill: white");
+        statusLabel.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 20));
 
 
         scrollPane = new ScrollPane(logPanel);
@@ -67,11 +75,12 @@ public class RaceView {
         statusPanel.getChildren().addAll(statusLabel, carStatusContainer, logLabel, scrollPane);
 
         logLabel.setText("\uD83C\uDFC1 Game Log: " );
-        logLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: darkgreen");
+        logLabel.setStyle("-fx-text-fill: white");
+        logLabel.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 20));
 
         HBox controlBox = new HBox(20);
         controlBox.setPadding(new Insets(10));
-        controlBox.setStyle("-fx-background-color: #e6e6e6;");
+        controlBox.setStyle("-fx-background-color:rgb(41, 121, 6);");
         controlBox.setAlignment(javafx.geometry.Pos.CENTER);
 
         Button startBtn = new Button("▶ Start");
@@ -79,7 +88,7 @@ public class RaceView {
         Button resetBtn = new Button("⟳ Restart");
         Button exitBtn = new Button("❌ Exit");
         controlBox.getChildren().addAll(startBtn, pauseBtn, resetBtn, exitBtn);
-
+       
         double deltaTime = 0.5;
         timeline = new Timeline(new KeyFrame(Duration.seconds(deltaTime), e -> {
             raceController.updateRace(deltaTime);
@@ -108,20 +117,44 @@ public class RaceView {
 
         startBtn.setOnAction(e -> {
             timeline.play();
+             try {
+            // Removed unused variable musicFile2
+            Media sound = new Media(new File("resources/images/racesound.mp3").toURI().toString());
+            race = new MediaPlayer(sound);
+            MediaPlayer race = new MediaPlayer(sound);
+            race.setOnReady(() -> {
+                System.out.println("Playing Sound...");
+                race.play();
+            });
+            race.setOnError(() -> {
+                System.out.println("Error: " + race.getError());
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
             if (isPaused) {
                 startBtn.setText("▶ Resume");
+                race.stop();
             }
             isPaused = false;
         });
 
         pauseBtn.setOnAction(e -> {
             timeline.pause();
+            race.stop();
             isPaused = true;
             startBtn.setText("▶ Resume");
+
         });
 
         resetBtn.setOnAction(e -> {
             timeline.stop();
+            if (race != null) {
+                race.stop();
+                race.dispose();
+            }
+            Media sound = new Media(new File("resources/images/racesound.mp3").toURI().toString());
+            race = new MediaPlayer(sound);
             raceController = new RaceController(primaryStage, gameData);
             logLabel.setText("");
             logPanel.getChildren().clear();
@@ -143,11 +176,7 @@ public class RaceView {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-          /* */      scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.SPACE) {
-                raceController.startSound();
-            }
-        });
+
 
         drawMap();
         updateStatus();
@@ -205,7 +234,7 @@ public class RaceView {
             carText.setWrapText(true);
             carText.setEditable(false);
             carText.setPrefHeight(100);
-            carText.setStyle("-fx-font-family: monospace; -fx-padding: 5; -fx-border-color: #ccc;");
+            //carText.setStyle("-fx-font-family:Marlett ; -fx-padding: 5; -fx-border-color: #ccc;");
             carStatusContainer.getChildren().add(carText);
 
             if (car.isSliding()) {
@@ -218,7 +247,7 @@ public class RaceView {
         String timeStamp = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         Label entry = new Label("[" + timeStamp + "] " + message);
         logPanel.getChildren().add(entry);
-
+        //logPanel.setStyle("-fx-font-family:Marlett ; -fx-padding: 5; -fx-border-color: #ccc;");
         Platform.runLater(() -> scrollPane.setVvalue(1.0));
     }
 }
