@@ -70,7 +70,7 @@ public class RaceView {
 
 
         scrollPane = new ScrollPane(logPanel);
-        scrollPane.setPrefHeight(250);
+        scrollPane.setPrefHeight(300);
         scrollPane.setFitToWidth(true);
 
         statusPanel.getChildren().addAll(statusLabel, carStatusContainer, logLabel, scrollPane);
@@ -259,7 +259,7 @@ public class RaceView {
             TextArea carText = new TextArea(sb.toString());
             carText.setWrapText(true);
             carText.setEditable(false);
-            carText.setPrefHeight(100);
+            carText.setPrefHeight(150);
             //carText.setStyle("-fx-font-family:Marlett ; -fx-padding: 5; -fx-border-color: #ccc;");
             carStatusContainer.getChildren().add(carText);
 
