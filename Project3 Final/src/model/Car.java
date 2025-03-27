@@ -19,6 +19,7 @@ public class Car {
     private boolean isSliding = false;
     private boolean hasFinished = false;
     private double totalTime = 0.0;
+    private double headingAngle = 0.0;
 
     public Car(String name, Engine engine, Tire tire, List<Stop> route, String color) {
         this.name = name;
@@ -96,6 +97,12 @@ public class Car {
             positionY = start.getY();
             visitedStops.add(start);
         }
+    }
+    public void setHeadingAngle(double headingAngle){
+        this.headingAngle = headingAngle;
+    }
+    public double getHeadingAngle(){
+        return headingAngle;
     }
 }
 

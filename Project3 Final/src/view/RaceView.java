@@ -220,7 +220,22 @@ public class RaceView {
         for (int i = 0; i < cars.size(); i++){
             Car car = cars.get(i);
             Image currentCarImage = ( i == 0) ? carImage : (i == 1) ? carImage2 : carImage;
-            gc.drawImage(currentCarImage, car.getPositionX() - 15, car.getPositionY() - 15, 30, 30);
+
+            double angle = 0.0;
+            if (car.getNextStop() !=null) {
+                double dx = car.getNextStop().getX() - car.getCurrentStop().getX();
+                double dy = car.getNextStop().getY() - car.getCurrentStop().getY();
+                angle = Math.toDegrees(Math.atan2(dy, dx));
+                car.setHeadingAngle(angle);
+            }
+            gc.save();
+            gc.translate(car.getPositionX(), car.getPositionY());
+            gc.rotate(car.getHeadingAngle());
+
+
+            gc.drawImage(currentCarImage,-15,-15,30,30); //, car.getPositionX() - 15, car.getPositionY() - 15, 30, 30);
+            gc.restore();
+
             gc.setFill(Color.BLACK);
             gc.fillText(car.getName(), car.getPositionX() - 10, car.getPositionY() - 20);
         }
