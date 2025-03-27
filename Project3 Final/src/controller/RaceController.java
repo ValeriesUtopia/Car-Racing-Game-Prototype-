@@ -86,7 +86,7 @@ public class RaceController {
             boolean sliding = false;
             for (Obstacle obstacle : gameData.getSelectedTrack().getObstacles()) {
                 if (obstacle.isInRange(car.getPositionX(), car.getPositionY())) {
-                    obstacle.applyEffect(car);
+                    obstacle.applyEffect(car, deltaTime);
                     sliding = true;
                 }
             }

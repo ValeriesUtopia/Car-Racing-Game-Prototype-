@@ -24,7 +24,8 @@ public abstract class Obstacle {
     public double getY() { return y; }
     public double getRadius() { return radius; }
 
-    public abstract void applyEffect(Car car);
+
+    public abstract void applyEffect(Car car, double deltaTime);
 }
 
 /*

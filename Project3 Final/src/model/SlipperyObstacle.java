@@ -6,8 +6,10 @@ public class SlipperyObstacle extends Obstacle {
     }
 
     @Override
-    public void applyEffect(Car car) {
+    public void applyEffect(Car car,double deltaTime) {
+        double slowdown = Math.pow(0.6, deltaTime);
+        car.setCurrentSpeed(car.getCurrentSpeed() * slowdown);
         car.setSliding(true);
-        car.setCurrentSpeed(car.getCurrentSpeed() * 0.6);
+        //car.setCurrentSpeed(car.getCurrentSpeed() * 0.6);
     }
 }

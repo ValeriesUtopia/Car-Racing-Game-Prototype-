@@ -90,7 +90,7 @@ public class RaceView {
         Button exitBtn = new Button("❌ Exit");
         controlBox.getChildren().addAll(startBtn, pauseBtn, resetBtn, exitBtn);
        
-        double deltaTime = 0.5;
+        double deltaTime = 0.005;
         timeline = new Timeline(new KeyFrame(Duration.seconds(deltaTime), e -> {
             raceController.updateRace(deltaTime);
             drawMap();
