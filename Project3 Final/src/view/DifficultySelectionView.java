@@ -1,6 +1,9 @@
+// This class represents the first screen (UI1) in the racing game.
+// It allows the user to choose a difficulty level and preview each track visually.
+// Once a selection is made and "Next" is clicked, it notifies the controller using a listener callback.
+// Author: Jing Pan
 package view;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,22 +24,35 @@ import javafx.stage.Stage;
 
 import java.util.function.Consumer;
 
-
 public class DifficultySelectionView {
-    private final Stage primaryStage;
-    private String selectedDifficulty = "Easy";
-    private Consumer<String> difficultySelectedListener;
 
+    private final Stage primaryStage;                    // Reference to the main stage (window)
+    private String selectedDifficulty = "Easy";          // Default selected difficulty
+    private Consumer<String> difficultySelectedListener; // Callback function (listener) for selection
+
+    /**
+     * Constructs the difficulty selection screen.
+     *
+     * @param primaryStage the JavaFX stage to render this view on
+     */
     public DifficultySelectionView(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
+    /**
+     * Sets the listener to be triggered when a difficulty is selected and "Next" is clicked.
+     *
+     * @param listener callback that accepts selected difficulty as a string
+     */
     public void setOnDifficultySelected(Consumer<String> listener) {
         this.difficultySelectedListener = listener;
     }
 
+    /**
+     * Displays the full difficulty selection UI.
+     */
     public void show() {
-        // Title
+        // === Title and Subtitle ===
         Text title = new Text("\uD83C\uDFC1 Select a Track to Begin");
         title.setFont(Font.font("Marlett", FontWeight.BOLD, FontPosture.ITALIC, 32));
         title.setFill(Color.DARKRED);
@@ -45,39 +61,34 @@ public class DifficultySelectionView {
         subtitle.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 22));
         subtitle.setFill(Color.DARKBLUE);
 
-        // ToggleGroup for difficulty
+        // === Create Radio Buttons for Difficulty Selection ===
         ToggleGroup group = new ToggleGroup();
 
-        // Easy option
+        // --- Easy Difficulty ---
         RadioButton easyBtn = new RadioButton("Easy");
         easyBtn.setToggleGroup(group);
         easyBtn.setSelected(true);
         easyBtn.setTextFill(Color.FORESTGREEN);
-        easyBtn.setStyle("-fx-font-size: 16px ; -"
-                + "fx-font-weight: bold;"); 
+        easyBtn.setStyle("-fx-font-size: 16px ; -fx-font-weight: bold;");
 
         Label easyLabel = new Label("Circular track with smooth turns");
-       // easyLabel.setStyle("-fx-font-size: 16px;");
         easyLabel.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 16));
-
         ImageView easyImg = new ImageView(new Image("file:resources/images/easy_preview.png"));
-        easyImg.setFitWidth(280); // 图片变大
+        easyImg.setFitWidth(280);
         easyImg.setPreserveRatio(true);
         VBox easyBox = new VBox(10, easyBtn, easyLabel, easyImg);
         easyBox.setAlignment(Pos.CENTER);
         easyBox.setPadding(new Insets(10));
         easyBox.setStyle("-fx-border-color: forestgreen; -fx-border-radius: 5;");
 
-        // Medium option
+        // --- Medium Difficulty ---
         RadioButton medBtn = new RadioButton("Medium");
         medBtn.setToggleGroup(group);
         medBtn.setTextFill(Color.ORANGE);
         medBtn.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
         Label medLabel = new Label("Zigzag track with moderate turns");
-        //medLabel.setStyle("-fx-font-size: 16px;");
         medLabel.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 16));
-
         ImageView medImg = new ImageView(new Image("file:resources/images/medium_preview.png"));
         medImg.setFitWidth(280);
         medImg.setPreserveRatio(true);
@@ -86,54 +97,53 @@ public class DifficultySelectionView {
         medBox.setPadding(new Insets(10));
         medBox.setStyle("-fx-border-color: orange; -fx-border-radius: 5;");
 
-        // Challenge option
+        // --- Challenge Difficulty ---
         RadioButton hardBtn = new RadioButton("Challenge");
         hardBtn.setToggleGroup(group);
         hardBtn.setTextFill(Color.CRIMSON);
         hardBtn.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
         Label hardLabel = new Label("Expert track with sharp turns");
-        //hardLabel.setStyle("-fx-font-size: 16px;"+ "-fx-font-weight: bold;");
         hardLabel.setFont(Font.font("Bookman Old Style", FontWeight.BOLD, 16));
         ImageView hardImg = new ImageView(new Image("file:resources/images/challenge_preview.png"));
-        hardImg.setFitWidth(280); // 图片变大
+        hardImg.setFitWidth(280);
         hardImg.setPreserveRatio(true);
         VBox hardBox = new VBox(10, hardBtn, hardLabel, hardImg);
         hardBox.setAlignment(Pos.CENTER);
         hardBox.setPadding(new Insets(10));
         hardBox.setStyle("-fx-border-color: crimson; -fx-border-radius: 5;");
 
-        // Listen to selection
+        // === Update selection variable when user clicks ===
         group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             selectedDifficulty = ((RadioButton) newVal).getText();
         });
 
-        // Next button
+        // === "Next" Button ===
         Button next = new Button("Next");
         next.setFont(Font.font("Marlett", FontWeight.BOLD, 16));
         next.setStyle("-fx-background-color: #E0E0E0; -fx-padding: 8 16; -fx-border-radius: 5;");
         next.setOnMouseEntered(e -> next.setStyle("-fx-background-color: #218838; -fx-text-fill: white; -fx-padding: 8 16;"));
         next.setOnMouseExited(e -> next.setStyle("-fx-background-color: #E0E0E0; -fx-padding: 8 16;"));
 
+        // Notify the controller with the selected difficulty
         next.setOnAction(e -> {
             if (difficultySelectedListener != null) {
                 difficultySelectedListener.accept(selectedDifficulty);
-                
             }
         });
 
+        // === Layout Setup ===
         HBox options = new HBox(30, easyBox, medBox, hardBox);
         options.setAlignment(Pos.CENTER);
 
         VBox layout = new VBox(30, title, subtitle, options, next);
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(50));
-        // Removed unused local variable imagePath
-        layout.setStyle("-fx-background-image: url('file:resources/images/racerMain.jpg'); " +
-        "-fx-background-size: cover; " +
-        "-fx-background-position: center;");
-
-        //layout.setStyle("-fx-background-color: linear-gradient(to bottom, #f0f8ff, #cce0f5);");
+        layout.setStyle(
+                "-fx-background-image: url('file:resources/images/racerMain.jpg'); " +
+                        "-fx-background-size: cover; " +
+                        "-fx-background-position: center;"
+        );
 
         Scene scene = new Scene(layout, 1000, 700);
         primaryStage.setScene(scene);
@@ -141,87 +151,3 @@ public class DifficultySelectionView {
         primaryStage.show();
     }
 }
-
-
-
-
-/*
-The View does not contain the Controller; it only exposes the setOnDifficultySelected() method,
-which the Controller listens to as a callback.
-The View handles the UI, while the Controller handles the logic—maintaining a clear separation of concerns.
-After pressing the "Next" button, the View triggers the difficultySelectedListener,
-and the Controller listens for this event to switch to CarSelectionController.
-*/
-/*
-public class DifficultySelectionView {
-    private Stage primaryStage;
-    private String selectedDifficulty = "Easy"; // Default difficulty
-    private Consumer<String> difficultySelectedListener; // Listener
-
-    public DifficultySelectionView(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-
-    public void setOnDifficultySelected(Consumer<String> listener) {
-        this.difficultySelectedListener = listener;
-    }
-
-    public void show() {
-        // Title
-        Text welcomeTitle = new Text("🏁 Welcome to the Racing Game!");
-        welcomeTitle.setFont(Font.font("Arial", FontWeight.BOLD, FontPosture.ITALIC, 32));
-        welcomeTitle.setFill(Color.DARKRED);
-
-        // Difficulty selection title
-        Text difficultyTitle = new Text("Select Your Race Difficulty:");
-        difficultyTitle.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        difficultyTitle.setFill(Color.DARKBLUE);
-
-        // Create radio buttons for difficulty selection
-        ToggleGroup difficultyGroup = new ToggleGroup();
-        RadioButton easy = new RadioButton("Easy");
-        RadioButton medium = new RadioButton("Medium");
-        RadioButton challenging = new RadioButton("Challenging");
-
-        easy.setToggleGroup(difficultyGroup);
-        medium.setToggleGroup(difficultyGroup);
-        challenging.setToggleGroup(difficultyGroup);
-        easy.setSelected(true);
-
-        easy.setStyle("-fx-font-size: 18px;");
-        medium.setStyle("-fx-font-size: 18px;");
-        challenging.setStyle("-fx-font-size: 18px;");
-
-        difficultyGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
-            selectedDifficulty = ((RadioButton) newVal).getText();
-        });
-
-        // "Next" button
-        Button nextButton = new Button("Next");
-        nextButton.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-
-        // Add hover effect
-        nextButton.setOnMouseEntered(e -> nextButton.setStyle("-fx-background-color: #218838; -fx-text-fill: white; -fx-padding: 10px 20px;"));
-        nextButton.setOnMouseExited(e -> nextButton.setStyle("-fx-background-color: #28a745; -fx-text-fill: white; -fx-padding: 10px 20px;"));
-
-        // Notify Controller upon button click
-        nextButton.setOnAction(e -> {
-            if (difficultySelectedListener != null) {
-                difficultySelectedListener.accept(selectedDifficulty); // Trigger listener
-            }
-        });
-
-        // Layout settings
-        VBox layout = new VBox(20);
-        layout.getChildren().addAll(welcomeTitle, difficultyTitle, easy, medium, challenging, nextButton);
-        layout.setAlignment(Pos.CENTER);
-        layout.setStyle("-fx-background-color: linear-gradient(to bottom, #E6E6FA, #B0C4DE); -fx-padding: 50px;");
-
-        Scene scene = new Scene(layout, 800, 600);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Racing Game - Select Difficulty");
-        primaryStage.show();
-    }
-}
-
- */
