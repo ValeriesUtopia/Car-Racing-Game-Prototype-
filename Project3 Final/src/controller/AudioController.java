@@ -18,6 +18,8 @@ public class AudioController {
      *
      * @param musicFile the file path to the music (e.g., "resources/audio/music.mp3")
      */
+    // Actually I uncommented this to enable it, moved Main.java and RaceController.java
+    // to use it instead of playing the sounds themselves (Andrew)
     public AudioController(String musicFile) {
 
         try {
