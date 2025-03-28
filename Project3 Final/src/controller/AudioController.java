@@ -19,7 +19,7 @@ public class AudioController {
      * @param musicFile the file path to the music (e.g., "resources/audio/music.mp3")
      */
     public AudioController(String musicFile) {
-        /*
+
         try {
             // Create media from file
             Media sound = new Media(new File(musicFile).toURI().toString());
@@ -38,7 +38,7 @@ public class AudioController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
+
     }
 
     /**

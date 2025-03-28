@@ -16,6 +16,7 @@ import java.io.File;
 
 import controller.DifficultySelectionController;
 import model.GameData;
+import controller.AudioController;
 
 public class Main extends Application {
 
@@ -29,7 +30,8 @@ public class Main extends Application {
         controller.showSelectionScreen();
 
         // Play background menu music
-        try {
+        AudioController jazzMusic = new AudioController("resources/images/MenuJazz.mp3");
+        /*try {
             String musicFile = "resources/images/MenuJazz.mp3"; // Path to music file
             Media sound = new Media(new File(musicFile).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
@@ -44,7 +46,7 @@ public class Main extends Application {
             });
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**

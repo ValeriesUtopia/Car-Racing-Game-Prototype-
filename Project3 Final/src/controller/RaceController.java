@@ -24,6 +24,7 @@ public class RaceController {
     private MediaPlayer mediaPlayer;         // Background race sound
     private boolean isSoundPlaying = false;  // Flag to prevent repeated play
     private boolean hasCarMoved = false;     // Flag to detect race start
+    private AudioController raceAudio;      // Used for audio
 
     /**
      * Constructor for RaceController.
@@ -49,7 +50,10 @@ public class RaceController {
      * Loads and plays background race music in a loop.
      */
     public void startSound() {
-        try {
+        raceAudio = new AudioController("resources/images/racesound.mp3");
+        raceAudio.play();
+        // This is the old code that has basically been moved to AudioController.
+        /*try {
             String musicFile = getClass().getResource("/images/racesound.mp3").toExternalForm();
             System.out.println("Music Path: " + musicFile); // Debug
 
@@ -70,7 +74,7 @@ public class RaceController {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -148,6 +152,9 @@ public class RaceController {
 
         // Stop music when race ends
         if (isRaceFinished()) {
+            if (raceAudio != null) {
+                raceAudio.stop();
+            }
             stopMusic();
         }
     }
