@@ -1,68 +1,50 @@
+// This class is the controller for the Difficulty Selection screen (UI1).
+// It allows the user to choose a difficulty level (Easy, Medium, Challenge),
+// saves the selected difficulty into GameData, and then transitions to the Car Selection screen (UI2).
+// Author: Jing Pan
+
 package controller;
 
 import javafx.stage.Stage;
-import view.DifficultySelectionView;
 import model.GameData;
 
-/**
- * Controller for the difficulty selection screen (UI1).
- * Only sets the selected difficulty into GameData, without creating Track yet.
- * Next step: pass control to CarSelectionController (UI2).
- */
 public class DifficultySelectionController {
-    private final Stage primaryStage;
-    private final GameData gameData;
 
+    private final Stage primaryStage;  // Reference to the main application window
+    private final GameData gameData;   // Shared data model for the game state
+
+    /**
+     * Constructor for DifficultySelectionController.
+     *
+     * @param primaryStage the application window
+     * @param gameData the shared game data model
+     */
     public DifficultySelectionController(Stage primaryStage, GameData gameData) {
         this.primaryStage = primaryStage;
         this.gameData = gameData;
     }
 
+    /**
+     * Shows the difficulty selection screen (UI1).
+     * Waits for the user to choose a difficulty, stores the choice,
+     * and then proceeds to the Car Selection screen (UI2).
+     */
     public void showSelectionScreen() {
-        DifficultySelectionView difficultySelection = new DifficultySelectionView(primaryStage);
+        view.DifficultySelectionView difficultySelection = new view.DifficultySelectionView(primaryStage);
 
-        // When difficulty is selected, store it in GameData and move to next UI
+        // Set a listener: When difficulty is selected in the UI, perform logic here
         difficultySelection.setOnDifficultySelected(difficulty -> {
             System.out.println("✅ Selected difficulty: " + difficulty);
-            gameData.setDifficulty(difficulty); // ✅ Only save difficulty
 
-            // Proceed to car selection screen
+            // Store difficulty in game data (no track is created yet)
+            gameData.setDifficulty(difficulty);
+
+            // Move to the car selection screen (UI2)
             CarSelectionController carSelection = new CarSelectionController(primaryStage, gameData);
             carSelection.showSelectionScreen();
         });
 
+        // Display the UI
         difficultySelection.show();
     }
 }
-
-
-/*
-🔹 setOnDifficultySelected is a method in the View that allows the Controller to listen for UI events.
-🔹 The Controller no longer directly depends on the View but instead waits for the View to trigger events.
-🔹 Switching to CarSelectionController is handled by the Controller, not the View.
- */
-
-/*
-public class DifficultySelectionController {
-    private Stage primaryStage;
-
-    public DifficultySelectionController(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
-
-    public void showSelectionScreen() {
-        DifficultySelectionView difficultySelection = new DifficultySelectionView(primaryStage);
-
-        // Listen for the difficulty selection event from the View and handle the logic
-        difficultySelection.setOnDifficultySelected(difficulty -> {
-            System.out.println("Selected Difficulty: " + difficulty);
-
-            // Create the next screen's Controller and switch the UI
-            CarSelectionController carSelection = new CarSelectionController(primaryStage, difficulty);
-            carSelection.showSelectionScreen();
-        });
-
-        difficultySelection.show();
-    }
-}
- */
