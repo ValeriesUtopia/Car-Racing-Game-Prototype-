@@ -1,26 +1,42 @@
+// This class represents a car in the racing game.
+// Each car has an engine, tire, route, color, and internal state
+// such as position, speed, sliding status, and total time.
+// It supports updating movement, progress, and position over time.
+// Author: Valeria Holland
+
 package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Car {
-    private final String name;
-    private final Engine engine;
-    private final Tire tire;
-    private final List<Stop> route;
-    private final String color;
+    private final String name;               // Car's name or label (e.g., "Car 1")
+    private final Engine engine;             // Car's engine affecting acceleration and max speed
+    private final Tire tire;                 // Car's tire affecting grip and sliding chance
+    private final List<Stop> route;          // Ordered list of stops the car must follow
+    private final String color;              // Color for UI display
 
-    private final List<Stop> visitedStops = new ArrayList<>();
+    private final List<Stop> visitedStops = new ArrayList<>(); // List of stops already visited
 
-    private int currentStopIndex = 0;
-    private double currentSpeed = 0.0;
-    private double positionX;
-    private double positionY;
-    private boolean isSliding = false;
-    private boolean hasFinished = false;
-    private double totalTime = 0.0;
-    private double headingAngle = 0.0;
+    private int currentStopIndex = 0;        // Index of the current stop in the route
+    private double currentSpeed = 0.0;       // Car's current speed
+    private double positionX;                // Current X coordinate on the map
+    private double positionY;                // Current Y coordinate on the map
+    private boolean isSliding = false;       // Whether the car is currently sliding
+    private boolean hasFinished = false;     // Whether the car has finished the race
+    private double totalTime = 0.0;          // Total time the car has spent racing
+    private double headingAngle = 0.0;       // Direction the car is facing (used for UI rotation)
 
+    /**
+     * Constructs a new Car object with the specified components and route.
+     * Initializes position to the first stop on the route.
+     *
+     * @param name name of the car
+     * @param engine engine object
+     * @param tire tire object
+     * @param route list of stops (route)
+     * @param color UI color for the car
+     */
     public Car(String name, Engine engine, Tire tire, List<Stop> route, String color) {
         this.name = name;
         this.engine = engine;
@@ -35,6 +51,7 @@ public class Car {
         }
     }
 
+    // ---------- Getters ----------
     public String getName() { return name; }
     public Engine getEngine() { return engine; }
     public Tire getTire() { return tire; }
@@ -48,20 +65,35 @@ public class Car {
     public double getTotalTime() { return totalTime; }
     public String getColor() { return color; }
     public List<Stop> getVisitedStops() { return visitedStops; }
+    public double getHeadingAngle() { return headingAngle; }
 
+    // ---------- Setters / State Modifiers ----------
     public void setSliding(boolean sliding) { this.isSliding = sliding; }
     public void setCurrentSpeed(double speed) { this.currentSpeed = speed; }
     public void updateTime(double delta) { this.totalTime += delta; }
     public void markFinished() { this.hasFinished = true; }
+    public void setHeadingAngle(double headingAngle) { this.headingAngle = headingAngle; }
 
+    /**
+     * Gets the current stop that the car is on.
+     * @return current Stop object
+     */
     public Stop getCurrentStop() {
         return route.get(currentStopIndex);
     }
 
+    /**
+     * Gets the next stop the car should move toward.
+     * @return next Stop object, or null if at the end of the route
+     */
     public Stop getNextStop() {
         return currentStopIndex + 1 < route.size() ? route.get(currentStopIndex + 1) : null;
     }
 
+    /**
+     * Advances the car to the next stop.
+     * Adds the stop to visitedStops and updates finished state if needed.
+     */
     public void advanceToNextStop() {
         currentStopIndex++;
         if (currentStopIndex < route.size()) {
@@ -71,11 +103,21 @@ public class Car {
         }
     }
 
+    /**
+     * Updates the car's current position on the screen.
+     * @param x new x-coordinate
+     * @param y new y-coordinate
+     */
     public void updatePosition(double x, double y) {
         this.positionX = x;
         this.positionY = y;
     }
 
+    /**
+     * Returns a human-readable representation of the car's route.
+     * Example: "A → B → C"
+     * @return string describing route
+     */
     public String getRouteAsString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < route.size(); i++) {
@@ -84,171 +126,23 @@ public class Car {
         }
         return sb.toString();
     }
-    public void resetProgress(){
+
+    /**
+     * Resets the car to its initial state for a new race.
+     * Used when restarting a race without rebuilding the game.
+     */
+    public void resetProgress() {
         currentStopIndex = 0;
         currentSpeed = 0.0;
         totalTime = 0.0;
         isSliding = false;
         hasFinished = false;
         visitedStops.clear();
-        if(!route.isEmpty()) {
+        if (!route.isEmpty()) {
             Stop start = route.get(0);
             positionX = start.getX();
             positionY = start.getY();
             visitedStops.add(start);
         }
     }
-    public void setHeadingAngle(double headingAngle){
-        this.headingAngle = headingAngle;
-    }
-    public double getHeadingAngle(){
-        return headingAngle;
-    }
 }
-
-
-/*可以运行版本
-package model;
-
-import java.util.List;
-
-public class Car {
-    private final String name;
-    private final Engine engine;
-    private final Tire tire;
-    private final List<Stop> route;
-    private final String color;
-
-    private int currentStopIndex = 0;
-    private double currentSpeed = 0.0;
-    private double positionX;
-    private double positionY;
-    private boolean isSliding = false;
-    private boolean hasFinished = false;
-    private double totalTime = 0.0;
-
-    public Car(String name, Engine engine, Tire tire, List<Stop> route, String color) {
-        this.name = name;
-        this.engine = engine;
-        this.tire = tire;
-        this.route = route;
-        this.color = color;
-        if (!route.isEmpty()) {
-            this.positionX = route.get(0).getX();
-            this.positionY = route.get(0).getY();
-        }
-    }
-
-    public String getName() { return name; }
-    public Engine getEngine() { return engine; }
-    public Tire getTire() { return tire; }
-    public List<Stop> getRoute() { return route; }
-    public int getCurrentStopIndex() { return currentStopIndex; }
-    public double getCurrentSpeed() { return currentSpeed; }
-    public double getPositionX() { return positionX; }
-    public double getPositionY() { return positionY; }
-    public boolean isSliding() { return isSliding; }
-    public boolean hasFinished() { return hasFinished; }
-    public double getTotalTime() { return totalTime; }
-    public String getColor() { return color; }
-
-    public void setSliding(boolean sliding) { this.isSliding = sliding; }
-    public void setCurrentSpeed(double speed) { this.currentSpeed = speed; }
-    public void updateTime(double delta) { this.totalTime += delta; }
-    public void markFinished() { this.hasFinished = true; }
-
-    public Stop getCurrentStop() {
-        return route.get(currentStopIndex);
-    }
-
-    public Stop getNextStop() {
-        return currentStopIndex + 1 < route.size() ? route.get(currentStopIndex + 1) : null;
-    }
-
-    public void advanceToNextStop() {
-        currentStopIndex++;
-        if (currentStopIndex >= route.size()) {
-            hasFinished = true;
-        }
-    }
-
-    public void updatePosition(double x, double y) {
-        this.positionX = x;
-        this.positionY = y;
-    }
-}
-
- */
-
-/*
-public class Car {
-    private int id;
-    private double x, y;  // Position
-    private double speed;  // Speed
-    private double direction; // Direction (angle in degrees)
-
-    private String wheel;  // Player-selected tire type
-    private String engine; // Player-selected engine type
-
-    public Car(int id, double x, double y, String wheel, String engine) {
-        this.id = id;
-        this.x = x;
-        this.y = y;
-        this.wheel = wheel;
-        this.engine = engine;
-        this.speed = 0;
-        this.direction = 0; // Initial direction facing right
-    }
-
-    public void move(double dx, double dy) {
-        this.x += dx;
-        this.y += dy;
-    }
-
-    // Get current position
-    public double getX() { return x; }
-    public double getY() { return y; }
-
-    // Set the initial position of the car
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    // Set speed
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    // Get speed
-    public double getSpeed() { return speed; }
-
-    // Set direction
-    public void setDirection(double direction) {
-        this.direction = direction;
-    }
-
-    // Get direction
-    public double getDirection() { return direction; }
-
-    // Get tire and engine information
-    public String getWheel() { return wheel; }
-    public String getEngine() { return engine; }
-
-    // Move the car forward
-    public void moveForward() {
-        x += speed * Math.cos(Math.toRadians(direction));
-        y += speed * Math.sin(Math.toRadians(direction));
-    }
-
-    // Turn the car (adjust direction)
-    public void turnLeft() {
-        direction -= 10; // Rotate counterclockwise by 10 degrees
-    }
-
-    public void turnRight() {
-        direction += 10; // Rotate clockwise by 10 degrees
-    }
-}
-
- */

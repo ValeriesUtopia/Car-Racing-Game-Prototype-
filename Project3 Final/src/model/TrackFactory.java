@@ -1,28 +1,48 @@
-package model;
+// This class is a factory that provides predefined tracks for the racing game.
+// It supports multiple difficulty levels (Easy, Medium, Challenge).
+// Each track includes a predefined layout of Stops and auto-placed obstacles.
+// Author: Andrew Lightfoot
 
+package model;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class TrackFactory {
 
+    /**
+     * Automatically places a given number of SlipperyObstacle objects
+     * between selected Stop pairs on the track.
+     *
+     * @param track the Track to which obstacles are added
+     * @param numberOfObstacles number of obstacles to generate
+     * @param radius the radius of effect for each obstacle
+     */
     private static void autoPlaceObstacles(Track track, int numberOfObstacles, double radius) {
         List<Stop> stops = track.getStops();
         int stopCount = stops.size();
         int interval = stopCount / numberOfObstacles;
 
         for (int i = 0; i < numberOfObstacles; i++) {
+            // Choose two consecutive stops based on interval
             int index = (i * interval) % stopCount;
             Stop s1 = stops.get(index);
             Stop s2 = stops.get((index + 1) % stopCount);
 
+            // Calculate the midpoint between two stops
             double midX = (s1.getX() + s2.getX()) / 2.0;
             double midY = (s1.getY() + s2.getY()) / 2.0;
 
+            // Place a SlipperyObstacle at the midpoint
             track.addObstacle(new SlipperyObstacle(midX, midY, radius));
         }
     }
 
+    /**
+     * Creates and returns an Easy difficulty track with 6 stops and 1 obstacle.
+     *
+     * @return Easy Track object
+     */
     public static Track createEasyTrack() {
         List<Stop> stops = new ArrayList<>();
         stops.add(new Stop("A", 300, 150));
@@ -37,6 +57,11 @@ public class TrackFactory {
         return track;
     }
 
+    /**
+     * Creates and returns a Medium difficulty track with 8 stops and 3 obstacles.
+     *
+     * @return Medium Track object
+     */
     public static Track createMediumTrack() {
         List<Stop> stops = new ArrayList<>();
         stops.add(new Stop("A", 200, 100));
@@ -53,6 +78,11 @@ public class TrackFactory {
         return track;
     }
 
+    /**
+     * Creates and returns a Challenge difficulty track with 23 stops and 9 obstacles.
+     *
+     * @return Challenge Track object
+     */
     public static Track createChallengeTrack() {
         List<Stop> stops = new ArrayList<>();
         stops.add(new Stop("A", 150, 150));
